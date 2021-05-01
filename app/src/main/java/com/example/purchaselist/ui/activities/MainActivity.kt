@@ -15,7 +15,10 @@ import com.example.purchaselist.data.StringResources
 import com.example.purchaselist.ui.adapters.PurchaseAdapter
 import com.example.purchaselist.ui.screens.MainActivityScreen
 import com.example.purchaselist.ui.viewmodels.MainViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val layout by lazy { MainActivityScreen(this) }
@@ -57,14 +60,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
+        val layoutManager = layout.recyclerView.layoutManager as LinearLayoutManager
         layout.recyclerView.apply {
             adapter = purchaseAdapter
-            scrollToPosition(viewModel.getPositionFromPrefs())
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    val layoutManager = layout.recyclerView.layoutManager as LinearLayoutManager
                     viewModel.position = layoutManager.findFirstVisibleItemPosition()
                     if (layoutManager.findFirstVisibleItemPosition() > focusPos ||
                         layoutManager.findLastVisibleItemPosition() < focusPos
@@ -74,6 +75,16 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+        lifecycleScope.launch {
+            val lastPos = viewModel.getPositionFromPrefs()
+            while (isActive){
+                delay(10)
+                layout.recyclerView.scrollToPosition(lastPos)
+                if (layoutManager.findFirstVisibleItemPosition() == lastPos) break
+            }
+        }
+
+
 
         layout.toolbar.setOnMenuItemClickListener {
             when (it.title) {
