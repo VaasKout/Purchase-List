@@ -26,11 +26,12 @@ abstract class PurchaseDatabase : RoomDatabase() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
                         CoroutineScope(Dispatchers.IO).launch {
-                            val purchase = Purchase()
-                            getDatabase(context).purchaseDao().insertItem(purchase)
+                            getDatabase(context).purchaseDao().insertItem(Purchase())
                         }
                     }
-                }).build()
+                })
+                    .fallbackToDestructiveMigration()
+                    .build()
             }
         }
     }

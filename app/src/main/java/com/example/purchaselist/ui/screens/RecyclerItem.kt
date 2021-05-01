@@ -57,9 +57,9 @@ class RecyclerItem(context: Context) {
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline6)
+            setTextAppearance(R.style.TextAppearance_MaterialComponents_Body1)
         } else {
-            setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Headline6)
+            setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Body1)
         }
         setTextColor(Color.BLACK)
         inputType =
@@ -68,6 +68,7 @@ class RecyclerItem(context: Context) {
         isSingleLine = false
         isElegantTextHeight = true
         hint = StringResources.enterItem
+        setHintTextColor(Color.GRAY)
         background = null
     }
 
