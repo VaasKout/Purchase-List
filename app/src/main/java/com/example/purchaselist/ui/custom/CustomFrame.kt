@@ -39,5 +39,4 @@ class CustomFrame @JvmOverloads constructor(
     fun setPaintColor(color: Int){
         paint.color = color
     }
-
 }
