@@ -1,11 +1,9 @@
 package com.example.purchaselist.ui.activities
 
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
-import com.example.purchaselist.R
 import com.example.purchaselist.data.ColorResources
 import com.example.purchaselist.ui.fragments.MainFragment
 import com.example.purchaselist.ui.screens.MainActivityScreen

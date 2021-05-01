@@ -17,7 +17,7 @@ class CustomFrame @JvmOverloads constructor(
         private const val STROKE_WIDTH = 8f
     }
 
-    val paint = Paint().apply {
+    private val paint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.STROKE
         strokeWidth = STROKE_WIDTH
@@ -38,7 +38,6 @@ class CustomFrame @JvmOverloads constructor(
 
     fun setPaintColor(color: Int){
         paint.color = color
-        invalidate()
     }
 
 }

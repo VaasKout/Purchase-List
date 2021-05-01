@@ -1,7 +1,6 @@
 package com.example.purchaselist.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import com.example.purchaselist.ui.adapters.PurchaseAdapter
 import com.example.purchaselist.ui.screens.MainFragmentScreen
 import com.example.purchaselist.ui.viewmodels.MainViewModel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
     private val layout by lazy { MainFragmentScreen(requireContext()) }
@@ -37,13 +35,20 @@ class MainFragment : Fragment() {
                 activityViewModel.deleteItem(activityViewModel.listAllItems[it])
             }
         )
-        layout.recyclerView.adapter = purchaseAdapter
+
         lifecycleScope.launchWhenStarted {
             activityViewModel.allItems.collect {
                 purchaseAdapter.submitList(it)
                 activityViewModel.listAllItems = it as MutableList<Purchase>
+                if (it.isEmpty()) {
+                    layout.setEmptyState()
+                } else {
+                    layout.setFullState()
+                }
             }
         }
+        layout.recyclerView.adapter = purchaseAdapter
+
 
         layout.toolbar.setOnMenuItemClickListener {
             when (it.title) {

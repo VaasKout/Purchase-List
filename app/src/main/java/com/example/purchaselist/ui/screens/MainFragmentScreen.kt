@@ -2,12 +2,10 @@ package com.example.purchaselist.ui.screens
 
 import android.content.Context
 import android.graphics.Color
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -50,10 +48,39 @@ class MainFragmentScreen(context: Context) {
         layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 
+    val tipText = TextView(context).apply {
+        layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+        ).apply {
+            gravity = Gravity.CENTER
+        }
+        gravity = Gravity.CENTER
+        text = StringResources.press
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline6)
+        } else{
+            setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Headline6)
+        }
+        setTextColor(Color.GRAY)
+        visibility = View.GONE
+    }
+
     init {
         containerView.apply {
             addView(toolbar)
             addView(recyclerView)
+            addView(tipText)
         }
+    }
+
+    fun setFullState(){
+        recyclerView.visibility = View.VISIBLE
+        tipText.visibility = View.GONE
+    }
+
+    fun setEmptyState(){
+        recyclerView.visibility = View.GONE
+        tipText.visibility = View.VISIBLE
     }
 }
