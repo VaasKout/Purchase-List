@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CheckBoxStyle" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorSecondary">#006DB3</item>
+        <item name="colorControlNormal">#039BE5</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorAccent">#006DB3</item>
+    </style>
+</resources>
