@@ -14,6 +14,7 @@ class PurchaseAdapter(
     val textCallback: (Int, String) -> Unit,
     val checkCallback: (Int, Boolean) -> Unit,
     val deleteCallback: (Int) -> Unit,
+    val textFocusCallback: (Int, Boolean) -> Unit,
 ) : ListAdapter<Purchase, PurchaseAdapter.ViewHolder>(DiffUtilCallback()) {
 
     inner class ViewHolder(rootView: View, private val viewInstance: RecyclerItem) :
@@ -24,6 +25,10 @@ class PurchaseAdapter(
             viewInstance.editItemText.addTextChangedListener {
                 textCallback(absoluteAdapterPosition, it.toString())
             }
+            viewInstance.editItemText.setOnFocusChangeListener { v, hasFocus ->
+                textFocusCallback(absoluteAdapterPosition, hasFocus)
+            }
+
             if (purchase.isChecked) {
                 viewInstance.setCheckedState()
                 viewInstance.checkBox.isChecked = true
