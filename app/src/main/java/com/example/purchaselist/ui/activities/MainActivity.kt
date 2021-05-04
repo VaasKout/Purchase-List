@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ColorResources.blueDark
         setContentView(layout.containerView)
-
         purchaseAdapter = PurchaseAdapter(
             textCallback = { position, text ->
                 viewModel.listAllItems[position].itemText = text

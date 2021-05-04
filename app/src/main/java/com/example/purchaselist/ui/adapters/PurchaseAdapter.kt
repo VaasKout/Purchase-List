@@ -1,6 +1,5 @@
 package com.example.purchaselist.ui.adapters
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
@@ -21,11 +20,11 @@ class PurchaseAdapter(
         RecyclerView.ViewHolder(rootView) {
         fun bind(purchase: Purchase) {
 
-            viewInstance.editItemText.setText(purchase.itemText)
-            viewInstance.editItemText.addTextChangedListener {
+            viewInstance.itemEditText.setText(purchase.itemText)
+            viewInstance.itemEditText.addTextChangedListener {
                 textCallback(absoluteAdapterPosition, it.toString())
             }
-            viewInstance.editItemText.setOnFocusChangeListener { v, hasFocus ->
+            viewInstance.itemEditText.setOnFocusChangeListener { _, hasFocus ->
                 textFocusCallback(absoluteAdapterPosition, hasFocus)
             }
 

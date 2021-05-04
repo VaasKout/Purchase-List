@@ -51,8 +51,6 @@ class MainActivityScreen(context: Context) {
         ).apply {
             weight = 3f
         }
-//        isFocusableInTouchMode = true
-//        descendantFocusability = RecyclerView.FOCUS_BEFORE_DESCENDANTS
         layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 

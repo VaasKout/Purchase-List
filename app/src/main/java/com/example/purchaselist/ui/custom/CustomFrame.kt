@@ -3,18 +3,16 @@ package com.example.purchaselist.ui.custom
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.util.AttributeSet
 import android.widget.FrameLayout
 
-class CustomFrame @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+class CustomFrame(context: Context) : FrameLayout(context) {
+
+    companion object{
+        private const val STROKE_WIDTH = 8f
+    }
 
     init {
         setWillNotDraw(false)
-    }
-    companion object{
-        private const val STROKE_WIDTH = 8f
     }
 
     private val paint = Paint().apply {

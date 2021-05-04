@@ -3,8 +3,6 @@ package com.example.purchaselist.ui.screens
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
-import android.text.InputType
-import android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.ViewGroup
@@ -47,11 +45,11 @@ class RecyclerItem(context: Context) {
         ).apply {
             weight = 8f
             gravity = Gravity.CENTER
-            setPadding(32, 8, 32, 8)
+            setPadding(32, 0, 32, 0)
         }
     }
 
-    val editItemText = EditText(editTextWrapper).apply {
+    val itemEditText = EditText(editTextWrapper).apply {
         layoutParams = FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -61,15 +59,14 @@ class RecyclerItem(context: Context) {
         } else {
             setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Body1)
         }
-        setTextColor(Color.BLACK)
-        inputType =
-            InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+
         imeOptions = EditorInfo.IME_ACTION_GO
-        isSingleLine = false
+        isSingleLine = true
         isElegantTextHeight = true
         hint = StringResources.enterItem
-        setHintTextColor(Color.GRAY)
         background = null
+        setHintTextColor(Color.GRAY)
+        setTextColor(Color.BLACK)
     }
 
     val deleteIcon = ImageView(context).apply {
@@ -88,19 +85,19 @@ class RecyclerItem(context: Context) {
         containerView.apply {
             addView(checkBox)
             addView(customFrame.apply {
-                addView(editItemText)
+                addView(itemEditText)
             })
             addView(deleteIcon)
         }
     }
 
-    fun setCheckedState(){
+    fun setCheckedState() {
         customFrame.setPaintColor(ColorResources.red)
-        editItemText.paintFlags = editItemText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        itemEditText.paintFlags = itemEditText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
     }
 
-    fun setUncheckedState(){
+    fun setUncheckedState() {
         customFrame.setPaintColor(ColorResources.blueLight)
-        editItemText.paintFlags = editItemText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+        itemEditText.paintFlags = itemEditText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
     }
 }
