@@ -44,6 +44,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun deleteAllItems(){
+        viewModelScope.launch {
+            repository.deleteAllItems()
+        }
+    }
+
     fun deleteItem(purchase: Purchase) {
         viewModelScope.launch {
             repository.updateItems(listAllItems)

@@ -8,4 +8,11 @@
     <style name="EditTextStyle" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorAccent">#006DB3</item>
     </style>
+
+    <style name="DialogStyle" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">#ffffff</item>
+        <item name="colorSurface">#039BE5</item>
+        <item name="colorOnSurface">#ffffff</item>
+        <item name="colorAccent">#ffffff</item>
+    </style>
 </resources>

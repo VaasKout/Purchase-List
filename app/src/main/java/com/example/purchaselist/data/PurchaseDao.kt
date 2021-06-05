@@ -16,4 +16,7 @@ interface PurchaseDao {
 
     @Query("SELECT * FROM purchase_table")
     fun getAllItems(): Flow<List<Purchase>>
+
+    @Query("DELETE FROM purchase_table")
+    suspend fun deleteAllItems()
 }

@@ -10,24 +10,31 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toolbar
-import androidx.fragment.app.FragmentContainerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.purchaselist.R
 import com.example.purchaselist.data.ColorResources
+import com.example.purchaselist.data.States
 import com.example.purchaselist.data.StringResources
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.delay
 
 class MainActivityScreen(context: Context) {
 
 
-    val containerView = LinearLayout(context).apply {
+    val mainContainerView = FrameLayout(context).apply {
+        layoutParams = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+        )
+        setBackgroundColor(Color.WHITE)
+    }
+    val frameContainerView = LinearLayout(context).apply {
         layoutParams = FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT,
         )
         orientation = LinearLayout.VERTICAL
-        setBackgroundColor(Color.WHITE)
     }
 
     val toolbar = Toolbar(context).apply {
@@ -39,7 +46,7 @@ class MainActivityScreen(context: Context) {
         setTitleTextColor(Color.WHITE)
         setBackgroundColor(ColorResources.blue)
         menu.apply {
-            add(StringResources.addItem).setIcon(R.drawable.ic_add)
+            add(StringResources.deleteAll).setIcon(R.drawable.ic_delete_menu)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
         }
     }
@@ -65,33 +72,49 @@ class MainActivityScreen(context: Context) {
         text = StringResources.press
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline6)
-        } else{
+        } else {
             setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Headline6)
         }
         setTextColor(Color.GRAY)
         visibility = View.GONE
     }
 
+    val floatingActionButton = FloatingActionButton(context).apply {
+        layoutParams = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            Gravity.BOTTOM or Gravity.END
+        ).apply {
+            setMargins(0,0, 64,64)
+        }
+        setImageResource(R.drawable.ic_add)
+        backgroundTintList = States.blueLightState
+
+    }
+
     init {
-        containerView.apply {
-            addView(toolbar)
-            addView(recyclerView)
-            addView(tipText)
+        mainContainerView.apply {
+            addView(frameContainerView.apply {
+                addView(toolbar)
+                addView(recyclerView)
+                addView(tipText)
+            })
+            addView(floatingActionButton)
         }
     }
 
-    fun setFullState(){
-        if (recyclerView.visibility == View.GONE){
+    fun setFullState() {
+        if (recyclerView.visibility == View.INVISIBLE) {
             recyclerView.visibility = View.VISIBLE
             tipText.visibility = View.GONE
         }
 
     }
 
-    fun setEmptyState(){
-        if (recyclerView.visibility == View.VISIBLE){
-            recyclerView.visibility = View.GONE
+    fun setEmptyState() {
+        if (recyclerView.visibility == View.VISIBLE) {
             tipText.visibility = View.VISIBLE
+            recyclerView.visibility = View.INVISIBLE
         }
     }
 }

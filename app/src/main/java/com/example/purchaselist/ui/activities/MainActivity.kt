@@ -1,6 +1,7 @@
 package com.example.purchaselist.ui.activities
 
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -9,12 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.purchaselist.R
 import com.example.purchaselist.data.ColorResources
 import com.example.purchaselist.data.Purchase
 import com.example.purchaselist.data.StringResources
 import com.example.purchaselist.ui.adapters.PurchaseAdapter
 import com.example.purchaselist.ui.screens.MainActivityScreen
 import com.example.purchaselist.ui.viewmodels.MainViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.isActive
@@ -30,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ColorResources.blueDark
-        setContentView(layout.containerView)
+        setContentView(layout.mainContainerView)
         purchaseAdapter = PurchaseAdapter(
             textCallback = { position, text ->
                 viewModel.listAllItems[position].itemText = text
@@ -76,19 +79,28 @@ class MainActivity : AppCompatActivity() {
         }
         lifecycleScope.launch {
             val lastPos = viewModel.getPositionFromPrefs()
-            while (isActive){
+            while (isActive) {
                 delay(10)
                 layout.recyclerView.scrollToPosition(lastPos)
                 if (layoutManager.findFirstVisibleItemPosition() == lastPos) break
             }
         }
 
+        layout.floatingActionButton.setOnClickListener {
+            viewModel.insertItem()
+        }
 
 
         layout.toolbar.setOnMenuItemClickListener {
             when (it.title) {
-                StringResources.addItem -> {
-                    viewModel.insertItem()
+                StringResources.deleteAll -> {
+                    MaterialAlertDialogBuilder(ContextThemeWrapper(this, R.style.DialogStyle))
+                        .setTitle(StringResources.confirmDialog)
+                        .setNegativeButton(StringResources.no) { _, _ -> }
+                        .setPositiveButton(StringResources.yes) { _, _ ->
+                            viewModel.deleteAllItems()
+                        }
+                        .show()
                     true
                 }
                 else -> false
@@ -103,7 +115,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun disableKeyboard() {
-        val view: View = currentFocus ?: layout.containerView
+        val view: View = currentFocus ?: layout.frameContainerView
         (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
             .hideSoftInputFromWindow(view.windowToken, 0)
     }
