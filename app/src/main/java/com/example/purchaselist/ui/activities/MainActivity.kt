@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
         val layoutManager = layout.recyclerView.layoutManager as LinearLayoutManager
         layout.recyclerView.apply {
             adapter = purchaseAdapter
@@ -77,19 +78,21 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+
         lifecycleScope.launch {
             val lastPos = viewModel.getPositionFromPrefs()
             while (isActive) {
-                delay(10)
-                layout.recyclerView.scrollToPosition(lastPos)
-                if (layoutManager.findFirstVisibleItemPosition() == lastPos) break
+                if (purchaseAdapter.currentList.isNotEmpty()){
+                    if (layoutManager.findFirstVisibleItemPosition() == lastPos) break
+                    layout.recyclerView.scrollToPosition(lastPos)
+                }
+                delay(64)
             }
         }
 
         layout.floatingActionButton.setOnClickListener {
             viewModel.insertItem()
         }
-
 
         layout.toolbar.setOnMenuItemClickListener {
             when (it.title) {

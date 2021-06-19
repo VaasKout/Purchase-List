@@ -54,14 +54,13 @@ class MainActivityScreen(context: Context) {
     val recyclerView = RecyclerView(context).apply {
         layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            0,
-        ).apply {
-            weight = 3f
-        }
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+        )
         layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        visibility = View.VISIBLE
     }
 
-    val tipText = TextView(context).apply {
+    private val tipText = TextView(context).apply {
         layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT,

@@ -71,5 +71,4 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getPositionFromPrefs(): Int = prefs.getInt(TAG_LAST_POS, 0)
 
-//    scrollToPosition(prefs.getInt(POS, 0))
 }

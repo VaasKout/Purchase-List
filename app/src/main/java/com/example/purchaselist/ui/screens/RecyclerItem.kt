@@ -38,7 +38,7 @@ class RecyclerItem(context: Context) {
         }
     }
 
-    val customFrame = CustomFrame(context).apply {
+    private val customFrame = CustomFrame(context).apply {
         layoutParams = LinearLayout.LayoutParams(
             0,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -78,7 +78,6 @@ class RecyclerItem(context: Context) {
             gravity = Gravity.CENTER
         }
         setImageResource(R.drawable.ic_delete)
-
     }
 
     init {
