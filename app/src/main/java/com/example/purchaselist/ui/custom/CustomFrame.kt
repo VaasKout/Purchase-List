@@ -7,7 +7,7 @@ import android.widget.FrameLayout
 
 class CustomFrame(context: Context) : FrameLayout(context) {
 
-    companion object{
+    companion object {
         private const val STROKE_WIDTH = 8f
     }
 
@@ -34,7 +34,7 @@ class CustomFrame(context: Context) : FrameLayout(context) {
         )
     }
 
-    fun setPaintColor(color: Int){
+    fun setPaintColor(color: Int) {
         paint.color = color
     }
 }

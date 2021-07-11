@@ -44,7 +44,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun deleteAllItems(){
+    fun deleteAllItems() {
         viewModelScope.launch {
             repository.deleteAllItems()
         }

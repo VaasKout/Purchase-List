@@ -13,74 +13,80 @@ import com.example.purchaselist.data.ColorResources
 import com.example.purchaselist.data.StringResources
 import com.example.purchaselist.ui.custom.CustomFrame
 
-class RecyclerItem(context: Context) {
+class RecyclerItem(private val context: Context) {
 
     private val checkBoxWrapper = ContextThemeWrapper(context, R.style.CheckBoxStyle)
     private val editTextWrapper = ContextThemeWrapper(context, R.style.EditTextStyle)
 
-    val containerView = LinearLayout(context).apply {
-        layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-        ).apply {
-            setMargins(32, 16, 32, 16)
-        }
-        orientation = LinearLayout.HORIZONTAL
-    }
+    lateinit var containerView: LinearLayout
+    lateinit var checkBox: CheckBox
+    private lateinit var customFrame: CustomFrame
+    lateinit var itemEditText: EditText
+    lateinit var deleteIcon: ImageView
 
-    val checkBox = CheckBox(checkBoxWrapper).apply {
-        layoutParams = LinearLayout.LayoutParams(
-            0,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-        ).apply {
-            weight = 1f
-            gravity = Gravity.CENTER
-        }
-    }
-
-    private val customFrame = CustomFrame(context).apply {
-        layoutParams = LinearLayout.LayoutParams(
-            0,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply {
-            weight = 8f
-            gravity = Gravity.CENTER
-            setPadding(32, 0, 32, 0)
-        }
-    }
-
-    val itemEditText = EditText(editTextWrapper).apply {
-        layoutParams = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            setTextAppearance(R.style.TextAppearance_MaterialComponents_Body1)
-        } else {
-            setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Body1)
+    fun build(): RecyclerItem {
+        containerView = LinearLayout(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            ).apply {
+                setMargins(32, 16, 32, 16)
+            }
+            orientation = LinearLayout.HORIZONTAL
         }
 
-        imeOptions = EditorInfo.IME_ACTION_GO
-        isSingleLine = true
-        isElegantTextHeight = true
-        hint = StringResources.enterItem
-        background = null
-        setHintTextColor(Color.GRAY)
-        setTextColor(Color.BLACK)
-    }
-
-    val deleteIcon = ImageView(context).apply {
-        layoutParams = LinearLayout.LayoutParams(
-            0,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply {
-            weight = 1f
-            gravity = Gravity.CENTER
+        checkBox = CheckBox(checkBoxWrapper).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            ).apply {
+                weight = 1f
+                gravity = Gravity.CENTER
+            }
         }
-        setImageResource(R.drawable.ic_delete)
-    }
 
-    init {
+        customFrame = CustomFrame(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                weight = 8f
+                gravity = Gravity.CENTER
+                setPadding(32, 0, 32, 0)
+            }
+        }
+
+        itemEditText = EditText(editTextWrapper).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                setTextAppearance(R.style.TextAppearance_MaterialComponents_Body1)
+            } else {
+                setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Body1)
+            }
+
+            imeOptions = EditorInfo.IME_ACTION_GO
+            isSingleLine = true
+            isElegantTextHeight = true
+            hint = StringResources.enterItem
+            background = null
+            setHintTextColor(Color.GRAY)
+            setTextColor(Color.BLACK)
+        }
+
+        deleteIcon = ImageView(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                weight = 1f
+                gravity = Gravity.CENTER
+            }
+            setImageResource(R.drawable.ic_delete)
+        }
+
         containerView.apply {
             addView(checkBox)
             addView(customFrame.apply {
@@ -88,14 +94,16 @@ class RecyclerItem(context: Context) {
             })
             addView(deleteIcon)
         }
+
+        return this
     }
 
-    fun setCheckedState() {
+    fun setCustomFrameCheckedState() {
         customFrame.setPaintColor(ColorResources.red)
         itemEditText.paintFlags = itemEditText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
     }
 
-    fun setUncheckedState() {
+    fun setCustomFrameUncheckedState() {
         customFrame.setPaintColor(ColorResources.blueLight)
         itemEditText.paintFlags = itemEditText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
     }

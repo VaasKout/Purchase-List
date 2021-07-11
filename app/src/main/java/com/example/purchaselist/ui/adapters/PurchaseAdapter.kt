@@ -29,18 +29,18 @@ class PurchaseAdapter(
             }
 
             if (purchase.isChecked) {
-                viewInstance.setCheckedState()
+                viewInstance.setCustomFrameCheckedState()
                 viewInstance.checkBox.isChecked = true
             } else {
-                viewInstance.setUncheckedState()
+                viewInstance.setCustomFrameUncheckedState()
                 viewInstance.checkBox.isChecked = false
             }
 
             viewInstance.checkBox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked){
-                    viewInstance.setCheckedState()
-                } else{
-                    viewInstance.setUncheckedState()
+                if (isChecked) {
+                    viewInstance.setCustomFrameCheckedState()
+                } else {
+                    viewInstance.setCustomFrameUncheckedState()
                 }
                 checkCallback(absoluteAdapterPosition, isChecked)
             }
@@ -51,7 +51,7 @@ class PurchaseAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layout = RecyclerItem(parent.context)
+        val layout = RecyclerItem(parent.context).build()
         return ViewHolder(layout.containerView, layout)
     }
 

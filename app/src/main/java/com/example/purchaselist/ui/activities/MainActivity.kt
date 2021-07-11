@@ -24,7 +24,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-    private val layout by lazy { MainActivityScreen(this) }
+    private val layout by lazy { MainActivityScreen(this).build() }
     private val viewModel by viewModels<MainViewModel>()
     private lateinit var purchaseAdapter: PurchaseAdapter
     private var focusPos = 0
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun disableKeyboard() {
-        val view: View = currentFocus ?: layout.frameContainerView
+        val view: View = currentFocus ?: layout.mainContainerView
         (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
             .hideSoftInputFromWindow(view.windowToken, 0)
     }

@@ -17,103 +17,107 @@ import com.example.purchaselist.data.ColorResources
 import com.example.purchaselist.data.States
 import com.example.purchaselist.data.StringResources
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.delay
 
-class MainActivityScreen(context: Context) {
+class MainActivityScreen(private val context: Context) {
 
+    lateinit var mainContainerView: FrameLayout
+    private lateinit var linearLayoutView: LinearLayout
+    lateinit var toolbar: Toolbar
+    lateinit var recyclerView: RecyclerView
+    private lateinit var tipTextView: TextView
+    lateinit var floatingActionButton: FloatingActionButton
 
-    val mainContainerView = FrameLayout(context).apply {
-        layoutParams = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-        )
-        setBackgroundColor(Color.WHITE)
-    }
-    val frameContainerView = LinearLayout(context).apply {
-        layoutParams = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-        )
-        orientation = LinearLayout.VERTICAL
-    }
-
-    val toolbar = Toolbar(context).apply {
-        layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-        )
-        title = StringResources.purchases
-        setTitleTextColor(Color.WHITE)
-        setBackgroundColor(ColorResources.blue)
-        menu.apply {
-            add(StringResources.deleteAll).setIcon(R.drawable.ic_delete_menu)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+    fun build(): MainActivityScreen {
+        mainContainerView = FrameLayout(context).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            )
+            setBackgroundColor(Color.WHITE)
         }
-    }
+        linearLayoutView = LinearLayout(context).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            )
+            orientation = LinearLayout.VERTICAL
+        }
 
-    val recyclerView = RecyclerView(context).apply {
-        layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-        )
-        layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        visibility = View.VISIBLE
-    }
+        toolbar = Toolbar(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            )
+            title = StringResources.purchases
+            setTitleTextColor(Color.WHITE)
+            setBackgroundColor(ColorResources.blue)
+            menu.apply {
+                add(StringResources.deleteAll).setIcon(R.drawable.ic_delete_menu)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+            }
+        }
 
-    private val tipText = TextView(context).apply {
-        layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-        ).apply {
+        recyclerView = RecyclerView(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            )
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        }
+
+        tipTextView = TextView(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            ).apply {
+                gravity = Gravity.CENTER
+            }
             gravity = Gravity.CENTER
+            text = StringResources.press
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline6)
+            } else {
+                setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Headline6)
+            }
+            setTextColor(Color.GRAY)
+            visibility = View.GONE
         }
-        gravity = Gravity.CENTER
-        text = StringResources.press
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline6)
-        } else {
-            setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Headline6)
+
+        floatingActionButton = FloatingActionButton(context).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                Gravity.BOTTOM or Gravity.END
+            ).apply {
+                setMargins(0, 0, 64, 64)
+            }
+            setImageResource(R.drawable.ic_add)
+            backgroundTintList = States.blueLightState
+
         }
-        setTextColor(Color.GRAY)
-        visibility = View.GONE
-    }
 
-    val floatingActionButton = FloatingActionButton(context).apply {
-        layoutParams = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            Gravity.BOTTOM or Gravity.END
-        ).apply {
-            setMargins(0,0, 64,64)
-        }
-        setImageResource(R.drawable.ic_add)
-        backgroundTintList = States.blueLightState
-
-    }
-
-    init {
         mainContainerView.apply {
-            addView(frameContainerView.apply {
+            addView(linearLayoutView.apply {
                 addView(toolbar)
                 addView(recyclerView)
-                addView(tipText)
+                addView(tipTextView)
             })
             addView(floatingActionButton)
         }
+        return this
     }
 
     fun setFullState() {
-        if (recyclerView.visibility == View.INVISIBLE) {
+        if (recyclerView.visibility == View.GONE) {
             recyclerView.visibility = View.VISIBLE
-            tipText.visibility = View.GONE
+            tipTextView.visibility = View.GONE
         }
-
     }
 
     fun setEmptyState() {
         if (recyclerView.visibility == View.VISIBLE) {
-            tipText.visibility = View.VISIBLE
-            recyclerView.visibility = View.INVISIBLE
+            recyclerView.visibility = View.GONE
+            tipTextView.visibility = View.VISIBLE
         }
     }
 }
